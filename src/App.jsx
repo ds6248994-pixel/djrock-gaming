@@ -3,6 +3,14 @@ import Navbar from "./components/Navbar";
 import { useState } from "react";
 import Hero from "./components/Hero";
 import GameCard from "./components/GameCard";
+import {Routes, Route} from "react-router-dom"; 
+
+import Home from "./pages/Home";
+import Games from "./pages/Games";
+import Favorites from "./pages/Favorites";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 
 function App() {
@@ -11,6 +19,7 @@ function App() {
     const[ sortBy, setSortBy] = useState("default");
     const [favorites, setFavorites] = useState([]);
     const [showFavorites, setShowFavorites] = useState(false);
+    
 
 
 
