@@ -47,7 +47,7 @@ const games = [
       name: "Valorant",
       description:  "5v5 Tactical Shooter",
       rating:" ⭐⭐⭐⭐⭐",
-      price: "499",
+      price: "Free",
       category: "Action",
       players:  "10 Player",
      },
@@ -224,4 +224,3 @@ const games = [
    );
   }
 export default App;
-
