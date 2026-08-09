@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Hero from "../components/Hero";
 import GameCard from "../components/GameCard";
+import games from "../data/games";
 
    
 function Home() {
@@ -10,99 +11,7 @@ function Home() {
      const [favorites, setFavorites] = useState([]);
      const [showFavorites, setShowFavorites] = useState(false);
 
-     const games = [
-  {
-    id: 1,
-    name: "GTA V",
-    description: "Open World Action Game",
-    rating: "⭐⭐⭐⭐⭐",
-    price: "2499",
-    category: "Action",
-    players: "1-30 Players",
-  },
-     {
-      id: 2,
-      name: "Minecraft",
-      description: "Creative Sandbox Game",
-      rating: "⭐⭐⭐⭐⭐",
-      price:  "1999" ,
-      category: "Action",
-      players:  "1-8 Player",
-     },
-     {
-      id: 3,
-      name: "Valorant",
-      description:  "5v5 Tactical Shooter",
-      rating:" ⭐⭐⭐⭐⭐",
-      price: "Free",
-      category: "Action",
-      players:  "10 Player",
-     },
-     {
-      id: 4,
-       name:  "Need for Speed",
-      description:  "Racing Game",
-      rating:   "⭐⭐⭐⭐⭐",
-      price:  "1499",
-      category: "Racing",
-      players:  "1-8 Player",
-     },
-     {
-      id: 5,
-      name: "Cyberpunk 2077",
-      description:  "Open World RPG",
-      rating:   "⭐⭐⭐⭐⭐",
-      price:  "899",
-      category:   "RPG",
-      players:  "1 Player",
-     },
-    {
-      id: 6,
-      name: "Red Dead Redemption 2",
-      description: "Open World Western Adventur",
-      rating:  "⭐⭐⭐⭐⭐",
-      price: "2199",
-      category:" Action Adventure",
-      players: "1 Players",
-   },
-    {
-      id:  7,
-      name: "Uncharted 4: A Thief's End",
-      description: "Open World Western Adventur",
-      rating:  "⭐⭐⭐⭐⭐",
-      price: "2499",
-      category: "Action Adventure",
-      players: "1 Players",
-    },
-      {
-       id: 8, 
-        name: "Tekken 8",
-        description: "Fighting Game",
-        rating: "⭐⭐⭐⭐⭐",
-        price: "2499",
-        category: "Fighting",
-        players: "2 Players",
-      },
-        {
-          id: 9,
-          name: "Elden Ring",
-          description: "Open World Exploration",
-          rating: "⭐⭐⭐⭐⭐",
-          price: "3599",
-          category: "RPG",
-          players: "1 Playess"
-        },
-          {
-            id: 10,
-          name: "The Witcher 3: Wild Hunt",
-          description: "Open World RPG",
-          rating: "⭐⭐⭐⭐⭐",
-          price: "1200",
-          category: "RPG",
-          players: "1 Playess"
-          },
-      
-]
+
  const filteredGames = games.filter((game) => {
      const matchSearch = game.name
       .toLowerCase()
@@ -154,16 +63,20 @@ function Home() {
           <Hero />
           
           <div className="search-container">
-            <input
-              className="search-box"
-              type="text"
-              placeholder="🔍Search your favorites games... "
-            />
+           <input
+                  className="search-box"
+                  type="text"
+                  placeholder="🔍 Search your favorite games..."
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                 />
 
-            <button className="clear-btn" 
-            >
-                Clear Search
-                </button> 
+           <button
+                    className="clear-btn"
+                    onClick={() => setSearch("")}
+>
+                    Clear Search
+                </button>
           </div>
           <div className="category-button">
               <button onClick={() => setCategory("All")}>All</button>

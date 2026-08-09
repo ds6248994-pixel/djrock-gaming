@@ -1,7 +1,7 @@
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
-function Navbar({ favorites }) {
+function Navbar({ favorites = [] }) {
   return (
     <header>
       <div className="brand">
