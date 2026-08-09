@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Hero from "../components/Hero";
 import GameCard from "../components/GameCard";
-import games from "../data/games";
+import games from "../Data/games";
 
    
 function Home() {
