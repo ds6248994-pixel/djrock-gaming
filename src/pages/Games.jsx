@@ -1,4 +1,4 @@
-import games from "../data/games";
+import games from "../Data/games";
 import GameCard from "../components/GameCard";
 
 function Games() {
