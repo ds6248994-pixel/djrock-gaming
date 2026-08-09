@@ -19,9 +19,6 @@ function App() {
     const[ sortBy, setSortBy] = useState("default");
     const [favorites, setFavorites] = useState([]);
     const [showFavorites, setShowFavorites] = useState(false);
-    
-
-
 
 const games = [
   {
@@ -95,8 +92,26 @@ const games = [
         price: "2499",
         category: "Fighting",
         players: "2 Players",
-
-      }
+      },
+        {
+          id: 9,
+          name: "Elden Ring",
+          description: "Open World Exploration",
+          rating: "⭐⭐⭐⭐⭐",
+          price: "3599",
+          category: "RPG",
+          players: "1 Playess"
+        },
+          {
+            id: 10,
+          name: "The Witcher 3: Wild Hunt",
+          description: "Open World RPG",
+          rating: "⭐⭐⭐⭐⭐",
+          price: "1200",
+          category: "RPG",
+          players: "1 Playess"
+          },
+      
 ]
    const filteredGames = games.filter((game) => {
      const matchSearch = game.name
@@ -148,7 +163,8 @@ const games = [
 
    return (
      <>
-       <Navbar  favorites={favorites} />
+       <Navbar 
+         favorites={favorites} />
        <Hero />
        <div className="search-container">
          <input
@@ -162,7 +178,8 @@ const games = [
            className="clear-btn"
            onClick={() => setSearch("")}
          >
-           Clear Search
+
+           Clear Search 
          </button>
        </div>
        <div className="category-button">
@@ -194,6 +211,7 @@ const games = [
                    ❤️ Favorites
                 </button>   
           </div>
+  
 
        <h3>
          Showing {sortedGames.length} {sortedGames.length === 1 ? "Game" : "Games"}
@@ -221,6 +239,9 @@ const games = [
          )}
        </div>
      </>
-   );
-  }
+  
+        );
+}
+
+  
 export default App;
