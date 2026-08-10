@@ -1,5 +1,7 @@
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";  
+
+
 
 function Navbar({ favorites = [] }) {
   return (
@@ -22,7 +24,21 @@ function Navbar({ favorites = [] }) {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
-        </ul> 
+          <li>
+          <Link to="/favorites">
+             ❤️ Favorites
+         </Link>
+         </li>
+         <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+           <Link to="/profile">Profile</Link>
+          </li>
+        
+        </ul>  
+  
+        
       </div>
 
       <div className="actions">

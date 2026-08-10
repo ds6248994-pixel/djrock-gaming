@@ -3,13 +3,11 @@ import Hero from "../components/Hero";
 import GameCard from "../components/GameCard";
 import games from "../Data/games";
 
-   
-function Home() {
-     const[ search, setSearch] =useState("");
-     const [category, setCategory] = useState("All");
-     const [sortBy, setSortBy] = useState("default");
-     const [favorites, setFavorites] = useState([]);
-     const [showFavorites, setShowFavorites] = useState(false);
+function Home({ favorites, setFavorites }) {
+    const [search, setSearch] = useState("");
+    const [category, setCategory] = useState("All");
+    const [sortBy, setSortBy] = useState("default");
+    const [showFavorites, setShowFavorites] = useState(false);
 
 
  const filteredGames = games.filter((game) => {

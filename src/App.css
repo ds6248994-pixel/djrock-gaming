@@ -275,3 +275,366 @@ body {
   color: white; 
   cursor: pointer;
 }
+
+.contact-page {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    text-align: center;
+}
+
+.contact-page h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.contact-page > p {
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+
+.contact-info {
+    padding: 30px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.contact-info h2 {
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    margin: 15px 0;
+    font-size: 17px;
+}
+.contact-form {
+    max-width: 700px;
+    margin: 30px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 14px;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #1f2533;
+    color: white;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #aaa;
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.contact-form button {
+    width: 180px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #00e5ff;
+    color: #111827;
+}
+
+.contact-form button:hover {
+    transform: scale(1.03);
+}
+
+.login-page {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.login-card {
+    width: 400px;
+    padding: 40px;
+    border-radius: 18px;
+    background: #232938;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.login-card h1 {
+    margin-bottom: 10px;
+}
+
+.login-card > p {
+    margin-bottom: 25px;
+}
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-card input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #171c28;
+    color: white;
+    font-size: 16px;
+}
+
+.login-card input::placeholder {
+    color: #999;
+}
+
+.login-card button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #00e5ff;
+    color: #111827;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.login-card button:hover {
+    transform: scale(1.02);
+}
+
+.login-register {
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.login-register span {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.register-page {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.register-card {
+    width: 400px;
+    padding: 40px;
+    border-radius: 18px;
+    background: #232938;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.register-card h1 {
+    margin-bottom: 10px;
+}
+
+.register-card > p {
+    margin-bottom: 25px;
+}
+
+.register-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.register-card input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #171c28;
+    color: white;
+    font-size: 16px;
+}
+
+.register-card input::placeholder {
+    color: #999;
+}
+
+.register-card button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #00e5ff;
+    color: #111827;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.register-card button:hover {
+    transform: scale(1.02);
+}
+
+.register-login {
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.register-login span {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.profile-page {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.profile-card {
+    width: 500px;
+    padding: 40px;
+    border-radius: 18px;
+    background: #232938;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.profile-avatar {
+    font-size: 70px;
+    margin-bottom: 10px;
+}
+
+.profile-card h1 {
+    margin-bottom: 8px;
+}
+
+.profile-subtitle {
+    margin-bottom: 30px;
+}
+
+.profile-info {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-info div {
+    padding: 15px;
+    border-radius: 10px;
+    background: #1b202d;
+}
+
+.profile-info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.profile-info p {
+    margin: 0;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.profile-actions button {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #00e5ff;
+    color: #111827;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.profile-actions button:hover {
+    transform: scale(1.02);
+}
+
+.game-details-page {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.game-details-card {
+    width: 700px;
+    padding: 45px;
+    border-radius: 20px;
+    background: #232938;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.game-details-card h1 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.game-details-description {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.game-details-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    text-align: left;
+}
+
+.game-details-info p {
+    padding: 15px;
+    margin: 0;
+    border-radius: 10px;
+    background: #1b202d;
+}
+
+.game-details-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.game-details-actions button,
+.game-not-found button {
+    padding: 13px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #00e5ff;
+    color: #111827;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.game-details-actions button:hover,
+.game-not-found button:hover {
+    transform: scale(1.03);
+}
+
+.game-not-found {
+    text-align: center;
+    padding: 100px 20px;
+}
