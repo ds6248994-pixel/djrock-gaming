@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import Home from "./pages/Home";
@@ -13,72 +13,76 @@ import Profile from "./pages/Profile";
 import GameDetails from "./pages/GameDetails";
 
 function App() {
-    const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
-    return (
-        <>
-            <Navbar favorites={favorites} />
+  return (
+    <>
+      <Navbar favorites={favorites} />
 
-            <Routes>
+      <Routes>
 
-                <Route
-                    path="/"
-                    element={
-                        <Home
-                            favorites={favorites}
-                            setFavorites={setFavorites}
-                        />
-                    }
-                />
+        <Route
+          path="/"
+          element={
+            <Home
+              favorites={favorites}
+              setFavorites={setFavorites}
+            />
+          }
+        />
 
-                <Route
-                    path="/games"
-                    element={<Games />}
-                />
+        <Route
+          path="/games"
+          element={<Games />}
+        />
 
-                <Route
-                    path="/games/:id"
-                    element={
-                        <GameDetails
-                            favorites={favorites}
-                            setFavorites={setFavorites}
-                        />
-                    }
-                />
+        <Route
+          path="/games/:id"
+          element={
+            <GameDetails
+              favorites={favorites}
+              setFavorites={setFavorites}
+            />
+          }
+        />
 
-                <Route
-                    path="/favorites"
-                    element={
-                        <Favorites
-                            favorites={favorites}
-                            setFavorites={setFavorites}
-                        />
-                    }
-                />
+        <Route
+          path="/favorites"
+          element={
+            <Favorites
+              favorites={favorites}
+              setFavorites={setFavorites}
+            />
+          }
+        />
 
-                <Route
-                    path="/contact"
-                    element={<Contact />}
-                />
+        <Route
+          path="/contact"
+          element={<Contact />}
+        />
 
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-                <Route
-                    path="/register"
-                    element={<Register />}
-                />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-                <Route
-                    path="/profile"
-                    element={<Profile />}
-                />
+        <Route
+          path="/profile"
+          element={
+            localStorage.getItem("djrockLoggedIn") === "true"
+              ? <Profile />
+              : <Navigate to="/login" />
+          }
+        />
 
-            </Routes>
-        </>
-    );
+      </Routes>
+    </>
+  );
 }
 
 export default App;

@@ -1,76 +1,134 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import games from "../Data/games";
 
 function GameDetails({ favorites, setFavorites }) {
-    const { id } = useParams();
-    console.log("URL ID:", id);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    const game = games.find((game) => game.id === Number(id));
-    console.log("FOUND GAME:", game);
+  const game = games.find(
+    (game) => game.id === Number(id)
+    
+  );
+     
+       console.log("URL ID:", id);
+       console.log("ALL GAME IDS:", games.map((game) => game.id));
+       console.log("FOUND GAME:", game);
 
-    function toggleFavorite() {
-        if (favorites.includes(game.id)) {
-            setFavorites(
-                favorites.filter((item) => item !== game.id)
-            );
-        } else {
-            setFavorites([...favorites, game.id]);
-        }
+  function toggleFavorite() {
+    if (favorites.includes(game.id)) {
+      setFavorites(
+        favorites.filter((item) => item !== game.id)
+      );
+    } else {
+      setFavorites([
+        ...favorites,
+        game.id
+      ]);
     }
+  }
 
-    if (!game) {
-        return (
-            <div className="game-not-found">
-                <h1>Game Not Found 🎮</h1>
-            </div>
-        );
-    }
-
+  if (!game) {
     return (
-        <div className="game-details-page">
+      <div className="game-not-found">
+        <h1>Game Not Found 🎮</h1>
 
-            <div className="game-details-card">
+        <button onClick={() => navigate("/games")}>
+          Back to Games
+        </button>
+      </div>
+    );
+  }
 
-                <h1>{game.name}</h1>
+  return (
+    <div className="game-details-page">
 
-                <p className="game-details-description">
-                    {game.description}
-                </p>
+      <div className="game-details-card">
 
-                <div className="game-details-info">
+        <h1>{game.name}</h1>
 
-                    <p>
-                        <strong>⭐ Rating:</strong> {game.rating}
-                    </p>
+        <p className="game-details-description">
+          {game.description}
+        </p>
 
-                    <p>
-                        <strong>💰 Price:</strong> ₹{game.price}
-                    </p>
+        <div className="game-details-info">
 
-                    <p>
-                        <strong>🎮 Category:</strong> {game.category}
-                    </p>
+          <p>
+            <strong>⭐ Rating:</strong>{" "}
+            {game.rating ?? "Not Rated"}
+          </p>
 
-                    <p>
-                        <strong>👥 Players:</strong> {game.players}
-                    </p>
+          <p>
+            <strong>💰 Price:</strong>{" "}
+            {game.price}
+          </p>
 
-                </div>
+          <p>
+            <strong>🎮 Category:</strong>{" "}
+            {game.category}
+          </p>
 
-                <div className="game-details-actions">
+          <p>
+            <strong>🖥️ Platform:</strong>{" "}
+            {game.platform}
+          </p>
 
-                    <button onClick={toggleFavorite}>
-                        {favorites.includes(game.id)
-                            ? "❤️ Remove from Favorites"
-                            : "❤️ Add to Favorites"}
-                    </button>
+          <p>
+            <strong>👥 Players:</strong>{" "}
+            {game.players}
+          </p>
 
-                </div>
-
-            </div>
+          <p>
+            <strong>📅 Release:</strong>{" "}
+            {game.releaseYear}
+          </p>
 
         </div>
-    );
+
+
+        <div className="game-details-actions">
+
+          <button
+            type="button"
+            onClick={toggleFavorite}
+          >
+            {favorites.includes(game.id)
+              ? "❤️ Remove from Favorites"
+              : "🤍 Add to Favorites"}
+          </button>
+
+
+       {game.officialUrl &&
+        game.officialUrl !== "Official Link Coming Soon" ? (
+    <a
+    href={game.officialUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="play-now-btn"
+    >
+     🎮 Play Now
+      </a>
+    ) : (
+      <button
+            type="button"
+            className="play-now-btn"
+            disabled
+     >
+          🎮 Official Link Coming Soon
+       </button>
+      )}
+          <button
+            type="button"
+            onClick={() => navigate("/games")}
+          >
+            ← Back to Games
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
 }
 
 export default GameDetails;

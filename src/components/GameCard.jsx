@@ -1,48 +1,47 @@
 import { useNavigate } from "react-router-dom";
 
 function GameCard({
-    name,
-    description,
-    rating,
-    price,
-    category,
-    players,
-    gameId,
-    toggleFavorites,
-    isFavorite
+  name,
+  description,
+  rating,
+  price,
+  category,
+  players,
+  gameId,
+  toggleFavorites,
+  isFavorite
 }) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <div className="game-card">
+  return (
+    <div className="game-card">
 
-            <h2>{name}</h2>
+      <h2>{name}</h2>
 
-            <p>{description}</p>
+      <p>{description}</p>
 
-            <p>⭐ Rating: {rating}</p>
-            <p>💰 Price: ₹{price}</p>
-            <p>🏷️ Category: {category}</p>
-            <p>👥 Players: {players}</p>
+     <p>⭐ Rating: {rating ?? "Not Rated"}</p>
 
-            <button
-                onClick={() => toggleFavorites(gameId)}
-            >
-                {isFavorite ? "❤️" : "🤍"}
-            </button>
+       <p>💰 Price: {price}</p>
 
-            <button
-                onClick={() => navigate(`/games/${gameId}`)}
-            >
-                View Details
-            </button>
+      <p>🏷️ Category: {category}</p>
 
-            <div>
-                IsFavorite: {isFavorite ? "Yes" : "No"}
-            </div>
+      <p>👥 Players: {players}</p>
 
-        </div>
-    );
+      <button
+        onClick={() => toggleFavorites(gameId)}
+      >
+        {isFavorite ? "❤️" : "🤍"}
+      </button>
+
+      <button
+        onClick={() => navigate(`/games/${gameId}`)}
+      >
+        View Details
+      </button>
+
+    </div>
+  );
 }
 
 export default GameCard;
