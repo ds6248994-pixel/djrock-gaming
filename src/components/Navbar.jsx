@@ -1,44 +1,36 @@
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { supabase } from "../lib/supabase";
 
-function Navbar({ favorites = [] }) {
+function Navbar({ favorites = [], user }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("djrockLoggedIn") === "true"
-  );
-  useEffect(() => {
-  const checkLogin = () => {
-    setIsLoggedIn(
-      localStorage.getItem("djrockLoggedIn") === "true"
-    );
-  };
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
 
-  window.addEventListener("authChange", checkLogin);
+    if (error) {
+      console.error("Logout Error:", error);
+      return;
+    }
 
-  return () => {
-    window.removeEventListener("authChange", checkLogin);
-  };
-}, []);
+    setMenuOpen(false);
+    navigate("/login");
+  }
 
-  function handleLogout() {
-  localStorage.removeItem("djrockLoggedIn");
-
-  window.dispatchEvent(new Event("authChange"));
-
-  setIsLoggedIn(false);
-  setMenuOpen(false);
-  navigate("/login");
-}
+  const isLoggedIn = !!user;
 
   return (
     <header>
 
       <div className="brand">
-        <img src={logo} alt="DJROCK Logo" width="180" />
+        <img
+          src={logo}
+          alt="DJROCK Logo"
+          width="180"
+        />
         <h1>DJROCK</h1>
       </div>
 
@@ -50,31 +42,49 @@ function Navbar({ favorites = [] }) {
         ☰
       </button>
 
-      <div className={`menu ${menuOpen ? "menu-open" : ""}`}>
+      <div
+        className={`menu ${
+          menuOpen ? "menu-open" : ""
+        }`}
+      >
         <ul>
 
           <li>
-            <Link to="/" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/"
+              onClick={() => setMenuOpen(false)}
+            >
               Home
             </Link>
           </li>
 
           <li>
-            <Link to="/games" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/games"
+              onClick={() => setMenuOpen(false)}
+            >
               Games
             </Link>
           </li>
 
-          <li>Videos</li>
+          <li>
+            Videos
+          </li>
 
           <li>
-            <Link to="/contact" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/contact"
+              onClick={() => setMenuOpen(false)}
+            >
               Contact
             </Link>
           </li>
 
           <li>
-            <Link to="/favorites" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/favorites"
+              onClick={() => setMenuOpen(false)}
+            >
               ❤️ Favorites
             </Link>
           </li>
@@ -82,13 +92,19 @@ function Navbar({ favorites = [] }) {
           {!isLoggedIn ? (
             <>
               <li>
-                <Link to="/login" onClick={() => setMenuOpen(false)}>
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                >
                   Login
                 </Link>
               </li>
 
               <li>
-                <Link to="/register" onClick={() => setMenuOpen(false)}>
+                <Link
+                  to="/register"
+                  onClick={() => setMenuOpen(false)}
+                >
                   Register
                 </Link>
               </li>
@@ -96,7 +112,10 @@ function Navbar({ favorites = [] }) {
           ) : (
             <>
               <li>
-                <Link to="/profile" onClick={() => setMenuOpen(false)}>
+                <Link
+                  to="/profile"
+                  onClick={() => setMenuOpen(false)}
+                >
                   Profile
                 </Link>
               </li>
@@ -117,11 +136,32 @@ function Navbar({ favorites = [] }) {
       </div>
 
       <div className="actions">
-        <p>❤️ Favorites: {favorites.length}</p>
+
+        <p>
+          ❤️ Favorites: {favorites.length}
+        </p>
 
         <button type="button">
           Play Game
         </button>
+
+        <li>
+  <Link
+    to="/leaderboard"
+    onClick={() => setMenuOpen(false)}
+  >
+    🏆 Leaderboard
+  </Link>
+</li>
+
+<li>
+  <Link
+    to="/my-scores"
+    onClick={() => setMenuOpen(false)}
+  >
+    📊 My Scores
+  </Link>
+</li>
       </div>
 
     </header>

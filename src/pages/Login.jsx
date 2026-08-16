@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { supabase } from "../lib/supabase";
 
 function Login() {
   const navigate = useNavigate();
@@ -7,30 +8,44 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
-    const savedUser = JSON.parse(localStorage.getItem("djrockUser"));
-
-    if (!savedUser) {
-      setMessage("No account found. Please register first.");
+    if (!email || !password) {
+      setMessage("Please enter email and password.");
       return;
     }
 
-    if (
-      email === savedUser.email &&
-      password === savedUser.password
-    ) {
-      localStorage.setItem("djrockLoggedIn", "true");
-      window.dispatchEvent(new Event("authChange"));
+    try {
+      setLoading(true);
+      setMessage("");
 
-      setMessage("Login successful! 🎉");
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-    
-        navigate("/profile");
-          } else {
-      setMessage("Invalid email or password.");
+      if (error) {
+        setMessage(error.message);
+        return;
+      }
+
+      if (data.user) {
+        setMessage("Login successful! 🎉");
+
+        setTimeout(() => {
+          navigate("/profile");
+        }, 500);
+      }
+
+    } catch (error) {
+      console.error("Login Error:", error);
+      setMessage("Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -61,8 +76,11 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">
-            Login
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
 
         </form>

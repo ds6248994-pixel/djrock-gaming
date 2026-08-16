@@ -9,38 +9,56 @@ function GameCard({
   players,
   gameId,
   toggleFavorites,
-  isFavorite
+  isFavorite,
 }) {
   const navigate = useNavigate();
 
   return (
     <div className="game-card">
 
-      <h2>{name}</h2>
+      <h3>{name}</h3>
 
       <p>{description}</p>
 
-     <p>⭐ Rating: {rating ?? "Not Rated"}</p>
+      <p>
+        ⭐ Rating: {rating ?? "Not Rated"}
+      </p>
 
-       <p>💰 Price: {price}</p>
+      <p>
+        💰 Price: {price}
+      </p>
 
-      <p>🏷️ Category: {category}</p>
+      <p>
+        🏷️ Category: {category}
+      </p>
 
-      <p>👥 Players: {players}</p>
+      <p>
+        👥 Players: {players}
+      </p>
 
-      <button
-        onClick={() => toggleFavorites(gameId)}
-      >
-        {isFavorite ? "❤️" : "🤍"}
-      </button>
+     <div className="game-card-actions">
 
-      <button
-        onClick={() => navigate(`/games/${gameId}`)}
-      >
-        View Details
-      </button>
+  <button
+    type="button"
+    onClick={() => navigate(`/games/${gameId}`)}
+  >
+    🎮 View Details
+  </button>
 
-    </div>
+  <button
+    type="button"
+    onClick={() => toggleFavorites(gameId)}
+  >
+    {isFavorite
+      ? "❤️ Remove Favorite"
+      : "🤍 Favorite"}
+  </button>
+
+</div>
+
+      </div>
+
+
   );
 }
 

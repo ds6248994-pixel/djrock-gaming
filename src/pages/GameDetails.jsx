@@ -1,44 +1,129 @@
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import games from "../Data/games";
 
-function GameDetails({ favorites, setFavorites }) {
+function GameDetails({ favorites, toggleFavorite }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const game = games.find(
-    (game) => game.id === Number(id)
-    
-  );
-     
-       console.log("URL ID:", id);
-       console.log("ALL GAME IDS:", games.map((game) => game.id));
-       console.log("FOUND GAME:", game);
+  const [game, setGame] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  function toggleFavorite() {
-    if (favorites.includes(game.id)) {
-      setFavorites(
-        favorites.filter((item) => item !== game.id)
-      );
-    } else {
-      setFavorites([
-        ...favorites,
-        game.id
-      ]);
+  // ================================
+  // GET SINGLE GAME FROM BACKEND
+  // ================================
+  useEffect(() => {
+    async function fetchGame() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          `http://localhost:5000/api/games/${id}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Game not found");
+        }
+
+        const result = await response.json();
+
+        if (!result.success || !result.game) {
+          throw new Error("Game not found");
+        }
+
+        const backendGame = result.game;
+
+        const formattedGame = {
+          id: backendGame.id,
+          name: backendGame.title,
+          description: backendGame.description,
+          category: backendGame.category,
+
+          rating: backendGame.rating ?? null,
+          price: backendGame.price ?? "Check Store",
+
+          platform:
+            backendGame.platform ??
+            "PC, PlayStation, Xbox",
+
+          players:
+            backendGame.players ??
+            "See Game Details",
+
+          releaseYear:
+            backendGame.releaseYear ??
+            "Not Available",
+
+          officialUrl:
+            backendGame.official_url ?? null,
+
+          image_url:
+            backendGame.image_url ?? null,
+        };
+
+        setGame(formattedGame);
+
+      } catch (err) {
+        console.error(
+          "Game Details API Error:",
+          err
+        );
+
+        setError(
+          "Game load नहीं हो पाया।"
+        );
+
+      } finally {
+        setLoading(false);
+      }
     }
-  }
 
-  if (!game) {
+    fetchGame();
+  }, [id]);
+
+  // ================================
+  // LOADING
+  // ================================
+  if (loading) {
     return (
       <div className="game-not-found">
-        <h1>Game Not Found 🎮</h1>
-
-        <button onClick={() => navigate("/games")}>
-          Back to Games
-        </button>
+        <h1>Loading Game... 🎮</h1>
+        <p>Please wait...</p>
       </div>
     );
   }
 
+  // ================================
+  // ERROR
+  // ================================
+  if (error || !game) {
+    return (
+      <div className="game-not-found">
+
+        <h1>Game Not Found 🎮</h1>
+
+        <p>
+          {error ||
+            "Game information unavailable."}
+        </p>
+
+        <button
+          type="button"
+          onClick={() =>
+            navigate("/games")
+          }
+        >
+          Back to Games
+        </button>
+
+      </div>
+    );
+  }
+
+  // ================================
+  // GAME DETAILS
+  // ================================
   return (
     <div className="game-details-page">
 
@@ -54,7 +139,8 @@ function GameDetails({ favorites, setFavorites }) {
 
           <p>
             <strong>⭐ Rating:</strong>{" "}
-            {game.rating ?? "Not Rated"}
+            {game.rating ??
+              "Not Rated"}
           </p>
 
           <p>
@@ -84,41 +170,50 @@ function GameDetails({ favorites, setFavorites }) {
 
         </div>
 
-
         <div className="game-details-actions">
 
+          {/* FAVORITE */}
           <button
             type="button"
-            onClick={toggleFavorite}
+            onClick={() =>
+              toggleFavorite(game.id)
+            }
           >
             {favorites.includes(game.id)
               ? "❤️ Remove from Favorites"
               : "🤍 Add to Favorites"}
           </button>
 
+          {/* PLAY NOW */}
+          {game.officialUrl ? (
 
-       {game.officialUrl &&
-        game.officialUrl !== "Official Link Coming Soon" ? (
-    <a
-    href={game.officialUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="play-now-btn"
-    >
-     🎮 Play Now
-      </a>
-    ) : (
-      <button
-            type="button"
-            className="play-now-btn"
-            disabled
-     >
-          🎮 Official Link Coming Soon
-       </button>
-      )}
+            <a
+              href={game.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="play-now-btn"
+            >
+              🎮 Play Now
+            </a>
+
+          ) : (
+
+            <button
+              type="button"
+              className="play-now-btn"
+              disabled
+            >
+              🎮 Official Link Coming Soon
+            </button>
+
+          )}
+
+          {/* BACK */}
           <button
             type="button"
-            onClick={() => navigate("/games")}
+            onClick={() =>
+              navigate("/games")
+            }
           >
             ← Back to Games
           </button>
