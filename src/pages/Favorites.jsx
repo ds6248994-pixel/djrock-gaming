@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import GameCard from "../components/GameCard";
+import API_URL from "../lib/api";
 
 function Favorites({
   favorites = [],
@@ -19,7 +20,7 @@ function Favorites({
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/games"
+          `${API_URL}/api/games`
         );
 
         const result = await response.json();

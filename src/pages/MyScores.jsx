@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import API_URL from "../lib/api";
 
 function MyScores() {
   const [scores, setScores] = useState([]);
@@ -24,7 +25,7 @@ function MyScores() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/scores",
+        `${API_URL}/api/scores`,
         {
           headers: {
             Authorization:

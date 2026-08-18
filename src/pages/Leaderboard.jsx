@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import API_URL from "../lib/api";
 
 function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -24,7 +25,7 @@ function Leaderboard() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/leaderboard",
+        `${API_URL}/api/leaderboard`,
         {
           headers: {
             Authorization:

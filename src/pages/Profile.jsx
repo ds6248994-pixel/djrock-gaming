@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import API_URL from "../lib/api";
 
 function Profile() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ function Profile() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/scores",
+        `${API_URL}/api/scores`,
         {
           headers: {
             Authorization: `Bearer ${session.access_token}`,

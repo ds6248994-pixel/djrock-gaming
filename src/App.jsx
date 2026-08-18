@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import DJRockAI from "./components/DJRockAI";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import API_URL from "./lib/api";
 
 import { supabase } from "./lib/supabase";
 
@@ -89,7 +90,7 @@ function App() {
 
       try {
         const response = await fetch(
-          "http://localhost:5000/api/favorites",
+          `${API_URL}/api/favorites`,
           {
             headers: {
               Authorization:
@@ -186,7 +187,7 @@ function App() {
       // ================================
       if (isFavorite) {
         response = await fetch(
-          `http://localhost:5000/api/favorites/${numericGameId}`,
+          `${API_URL}/api/favorites/${numericGameId}`,
           {
             method: "DELETE",
             headers: {
@@ -202,7 +203,7 @@ function App() {
       // ================================
       else {
         response = await fetch(
-          "http://localhost:5000/api/favorites",
+          "`${API_URL}/api/favorites/${numericGameId}`",
           {
             method: "POST",
 

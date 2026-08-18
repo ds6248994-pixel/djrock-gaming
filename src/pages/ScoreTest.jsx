@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import API_URL from "../lib/api";
 
 function ScoreTest() {
   const [gameId, setGameId] = useState("");
@@ -31,7 +32,7 @@ function ScoreTest() {
       </button>
 
       const response = await fetch(
-        "http://localhost:5000/api/scores",
+        `${API_URL}/api/scores`,
         {
           headers: {
             Authorization: `Bearer ${session.access_token}`,
@@ -81,7 +82,7 @@ async function loadLeaderboard() {
     }
 
     const response = await fetch(
-      "http://localhost:5000/api/leaderboard",
+      `${API_URL}/api/leaderboard`,
       {
         headers: {
           Authorization:
@@ -173,7 +174,7 @@ async function loadLeaderboard() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/scores",
+        `${API_URL}/api/scores`,
         {
           method: "POST",
 

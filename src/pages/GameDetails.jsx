@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import API_URL from "../lib/api";
 
 function GameDetails({ favorites, toggleFavorite }) {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function GameDetails({ favorites, toggleFavorite }) {
         setError("");
 
         const response = await fetch(
-          `http://localhost:5000/api/games/${id}`
+          `${API_URL}/api/games/${id}`
         );
 
         if (!response.ok) {
