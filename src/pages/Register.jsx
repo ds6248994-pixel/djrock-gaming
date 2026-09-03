@@ -11,6 +11,7 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [contactNumber, setContactNumber] = useState("");
 
   async function handleRegister(event) {
     event.preventDefault();
@@ -21,6 +22,7 @@ function Register() {
     if (
       !name ||
       !email ||
+      !contactNumber ||
       !password ||
       !confirmPassword
     ) {
@@ -75,10 +77,10 @@ function Register() {
         );
         return;
       }
-
       // ================================
       // CREATE PROFILE
       // ================================
+
       const userId = data.user.id;
 
       const { error: profileError } =
@@ -87,7 +89,9 @@ function Register() {
           .insert({
             id: userId,
             username: name.trim(),
+            contact_number: contactNumber.trim(),
             avatar_url: null,
+            role: "user",
           });
 
       if (profileError) {
@@ -97,11 +101,12 @@ function Register() {
         );
 
         setMessage(
-          "Account created, but profile could not be created. Please contact support."
+          "Account created, but profile could not be created."
         );
 
         return;
       }
+
 
       // ================================
       // SUCCESS
@@ -166,7 +171,15 @@ function Register() {
               setEmail(e.target.value)
             }
           />
-
+            {/* CONTACT */}
+            <input
+              type="tel"
+              placeholder="Enter your contact number"
+              value={contactNumber}
+              onChange={(e) =>
+                setContactNumber(e.target.value)
+              }
+            />
           {/* PASSWORD */}
           <input
             type="password"
@@ -217,8 +230,10 @@ function Register() {
         </p>
 
       </div>
+      
 
     </div>
+    
   );
 }
 

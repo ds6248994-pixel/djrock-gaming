@@ -1,126 +1,331 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
-import API_URL from "../lib/api";
 
 function Profile() {
   const navigate = useNavigate();
 
-  const savedUser = JSON.parse(
-    localStorage.getItem("djrockUser")
-  );
+  const [user, setUser] = useState(null);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const [name, setName] = useState(
-    savedUser?.name || ""
-  );
-
-  const [email, setEmail] = useState(
-    savedUser?.email || ""
-  );
+  const [message, setMessage] = useState("");
 
   // ================================
-  // MY SCORES
+  // LOAD PROFILE
   // ================================
-  const [scores, setScores] = useState([]);
-  const [scoresLoading, setScoresLoading] = useState(true);
-  const [scoresError, setScoresError] = useState("");
 
-  // ================================
-  // LOAD MY SCORES
-  // ================================
-  async function loadScores() {
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  async function loadProfile() {
     try {
-      setScoresLoading(true);
-      setScoresError("");
+      setLoading(true);
+      setMessage("");
+
+      // ================================
+      // GET AUTH USER
+      // ================================
 
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-      if (!session) {
-        setScoresError("Please login first.");
+      if (authError || !user) {
+        console.error(
+          "Profile Auth Error:",
+          authError
+        );
+
+        navigate("/login");
         return;
       }
 
-      const response = await fetch(
-        `${API_URL}/api/scores`,
-        {
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-          },
-        }
+      setUser(user);
+      console.log("CURRENT USER ID:", user.id);
+      console.log("CURRENT USER EMAIL:", user.email);
+
+      setEmail(
+        user.email || ""
       );
 
-      const result = await response.json();
+      // ================================
+      // GET PROFILE
+      // ================================
 
-      if (!response.ok) {
+        const {
+          data: profiles,
+          error: profileError,
+        } = await supabase
+          .from("profile")
+          .select(
+            "id, username, avatar_url, created_at, role, contact_number"
+          )
+          .eq("id", user.id);
+
+        if (profileError) {
+          console.error(
+            "Profile Load Error:",
+            profileError
+          );
+
+          setMessage(
+            profileError.message
+          );
+
+          return;
+        }
+
+        if (!profiles || profiles.length === 0) {
+          console.error(
+            "PROFILE NOT FOUND:",
+            user.id
+          );
+
+          setMessage(
+            "Profile not found for this account."
+          );
+
+          return;
+        }
+
+        const profile = profiles[0];
+
+      if (profileError) {
         console.error(
-          "Get Scores Error:",
-          result
+          "Profile Load Error:",
+          profileError
         );
 
-        setScoresError(
-          result.error ||
-            "Scores load नहीं हो पाए।"
+        setMessage(
+          "Could not load profile."
         );
 
         return;
       }
 
-      setScores(result.scores || []);
+      setName(
+        profile?.username || ""
+      );
+
+      setContactNumber(
+        profile?.contact_number || ""
+      );
 
     } catch (error) {
       console.error(
-        "Load Scores Error:",
+        "Load Profile Error:",
         error
       );
 
-      setScoresError(
-        "Scores load नहीं हो पाए।"
+      setMessage(
+        "Something went wrong while loading your profile."
       );
 
     } finally {
-      setScoresLoading(false);
+      setLoading(false);
     }
   }
 
   // ================================
-  // LOAD SCORES ON PROFILE OPEN
-  // ================================
-  useEffect(() => {
-    loadScores();
-  }, []);
-
-  // ================================
   // SAVE PROFILE
   // ================================
-  function handleSave() {
-    const updatedUser = {
-      ...savedUser,
-      name: name,
-      email: email,
-    };
 
-    localStorage.setItem(
-      "djrockUser",
-      JSON.stringify(updatedUser)
-    );
+  async function handleSave() {
+    if (!name.trim()) {
+      setMessage(
+        "Please enter your name."
+      );
 
-    setIsEditing(false);
+      return;
+    }
+
+    try {
+      setSaving(true);
+      setMessage("");
+
+      const {
+          data: updatedProfiles,
+          error,
+        } = await supabase
+          .from("profile")
+          .update({
+            username: name.trim(),
+            contact_number:
+              contactNumber.trim() || null,
+          })
+          .eq("id", user.id)
+          .select(
+            "id, username, avatar_url, created_at, role, contact_number"
+          );
+
+        if (error) {
+          console.error(
+            "Profile Update Error:",
+            error
+          );
+
+          setMessage(error.message);
+          return;
+        }
+
+        if (
+          !updatedProfiles ||
+          updatedProfiles.length === 0
+        ) {
+          console.error(
+            "PROFILE UPDATE RETURNED 0 ROWS:",
+            user.id
+          );
+
+          setMessage(
+            "Profile could not be updated."
+          );
+
+          return;
+    } 
+
+const updatedProfile =
+  updatedProfiles[0];
+
+      if (error) {
+        console.error(
+          "Profile Update Error:",
+          error
+        );
+
+        setMessage(
+          error.message
+        );
+
+        return;
+      }
+
+      // ================================
+      // UPDATE LOCAL STORAGE
+      // ================================
+
+      const savedUser =
+        JSON.parse(
+          localStorage.getItem(
+            "djrockUser"
+          )
+        ) || {};
+
+      const updatedUser = {
+        ...savedUser,
+        id: updatedProfile.id,
+        name:
+          updatedProfile.username,
+        email:
+          user.email || "",
+        contactNumber:
+          updatedProfile.contact_number,
+        memberSince:
+          updatedProfile.created_at
+            ? new Date(
+                updatedProfile.created_at
+              ).getFullYear()
+            : "2026",
+      };
+
+      localStorage.setItem(
+        "djrockUser",
+        JSON.stringify(
+          updatedUser
+        )
+      );
+
+      setMessage(
+        "Profile updated successfully! ✅"
+      );
+
+      setIsEditing(false);
+
+    } catch (error) {
+      console.error(
+        "Save Profile Error:",
+        error
+      );
+
+      setMessage(
+        "Could not save profile."
+      );
+
+    } finally {
+      setSaving(false);
+    }
   }
 
   // ================================
   // LOGOUT
   // ================================
-  function handleLogout() {
-    localStorage.removeItem(
-      "djrockLoggedIn"
-    );
 
-    navigate("/login");
+  async function handleLogout() {
+    try {
+      const { error } =
+        await supabase.auth.signOut();
+
+      if (error) {
+        console.error(
+          "Logout Error:",
+          error
+        );
+
+        setMessage(
+          error.message
+        );
+
+        return;
+      }
+
+      localStorage.removeItem(
+        "djrockLoggedIn"
+      );
+
+      localStorage.removeItem(
+        "djrockUser"
+      );
+
+      navigate("/login");
+
+    } catch (error) {
+      console.error(
+        "Logout Error:",
+        error
+      );
+
+      setMessage(
+        "Logout failed. Please try again."
+      );
+    }
   }
+
+  // ================================
+  // LOADING
+  // ================================
+
+  if (loading) {
+    return (
+      <div className="profile-page">
+        <div className="profile-card">
+          <h1>Loading Profile...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  // ================================
+  // UI
+  // ================================
 
   return (
     <div className="profile-page">
@@ -131,7 +336,9 @@ function Profile() {
           👤
         </div>
 
-        <h1>My Profile</h1>
+        <h1>
+          My Profile
+        </h1>
 
         <p className="profile-subtitle">
           Welcome to your DJROCK profile
@@ -143,98 +350,96 @@ function Profile() {
 
         <div className="profile-info">
 
+          {/* NAME */}
+
           <div>
-            <strong>Name</strong>
+            <strong>
+              Name
+            </strong>
 
             {isEditing ? (
               <input
                 type="text"
                 value={name}
                 onChange={(e) =>
-                  setName(e.target.value)
+                  setName(
+                    e.target.value
+                  )
                 }
+                placeholder="Enter your name"
               />
             ) : (
-              <p>{name}</p>
+              <p>
+                {name || "Not set"}
+              </p>
             )}
           </div>
 
+          {/* EMAIL */}
+
           <div>
-            <strong>Email</strong>
+            <strong>
+              Email
+            </strong>
+
+            <p>
+              {email || "Not available"}
+            </p>
+          </div>
+
+          {/* CONTACT NUMBER */}
+
+          <div>
+            <strong>
+              Contact Number
+            </strong>
 
             {isEditing ? (
               <input
-                type="email"
-                value={email}
+                type="tel"
+                value={contactNumber}
                 onChange={(e) =>
-                  setEmail(e.target.value)
+                  setContactNumber(
+                    e.target.value
+                  )
                 }
+                placeholder="Enter your contact number"
               />
             ) : (
-              <p>{email}</p>
+              <p>
+                {contactNumber ||
+                  "Not added"}
+              </p>
             )}
           </div>
 
+          {/* MEMBER SINCE */}
+
           <div>
-            <strong>Member Since</strong>
+            <strong>
+              Member Since
+            </strong>
 
             <p>
-              {savedUser?.memberSince || "2026"}
+              {user?.created_at
+                ? new Date(
+                    user.created_at
+                  ).getFullYear()
+                : "2026"}
             </p>
           </div>
 
         </div>
 
         {/* ================================
-            MY SCORES
+            MESSAGE
         ================================ */}
 
-        <div className="profile-scores">
-
-          <h2>
-            🏆 My Scores
-          </h2>
-
-          {scoresLoading ? (
-            <p>
-              Loading scores...
-            </p>
-          ) : scoresError ? (
-            <p className="profile-message">
-              {scoresError}
-            </p>
-          ) : scores.length === 0 ? (
-            <p>
-              अभी कोई score नहीं है।
-            </p>
-          ) : (
-            <div className="scores-list">
-
-              {scores.map((item) => (
-                <div
-                  key={item.id}
-                  className="score-item"
-                >
-                  <span>
-                    🎮 Game ID:{" "}
-                    <strong>
-                      {item.game_id}
-                    </strong>
-                  </span>
-
-                  <span>
-                    🏆 Score:{" "}
-                    <strong>
-                      {item.score}
-                    </strong>
-                  </span>
-                </div>
-              ))}
-
-            </div>
-          )}
-
-        </div>
+        {message && (
+          <p className="register-message">
+            {message}
+          </p>
+        )}
 
         {/* ================================
             PROFILE ACTIONS
@@ -247,15 +452,20 @@ function Profile() {
               <button
                 type="button"
                 onClick={handleSave}
+                disabled={saving}
               >
-                💾 Save
+                {saving
+                  ? "Saving..."
+                  : "💾 Save"}
               </button>
 
               <button
                 type="button"
-                onClick={() =>
-                  setIsEditing(false)
-                }
+                onClick={() => {
+                  setIsEditing(false);
+                  setMessage("");
+                }}
+                disabled={saving}
               >
                 ❌ Cancel
               </button>
@@ -263,9 +473,10 @@ function Profile() {
           ) : (
             <button
               type="button"
-              onClick={() =>
-                setIsEditing(true)
-              }
+              onClick={() => {
+                setMessage("");
+                setIsEditing(true);
+              }}
             >
               ✏️ Edit Profile
             </button>

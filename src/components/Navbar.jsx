@@ -67,9 +67,7 @@ function Navbar({ favorites = [], user }) {
             </Link>
           </li>
 
-          <li>
-            Videos
-          </li>
+          
 
           <li>
             <Link
@@ -141,28 +139,9 @@ function Navbar({ favorites = [], user }) {
           ❤️ Favorites: {favorites.length}
         </p>
 
-        <button type="button">
-          Play Game
-        </button>
+        
 
-        <li>
-  <Link
-    to="/leaderboard"
-    onClick={() => setMenuOpen(false)}
-  >
-    🏆 Leaderboard
-  </Link>
-</li>
-
-<li>
-  <Link
-    to="/my-scores"
-    onClick={() => setMenuOpen(false)}
-  >
-    📊 My Scores
-  </Link>
-</li>
-      </div>
+       </div>
 
     </header>
   );

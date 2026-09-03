@@ -45,6 +45,7 @@ function Games({
 
         const result =
           await response.json();
+          console.log("GAMES API RESULT:", result);
 
         if (!result.success) {
           throw new Error(
@@ -81,10 +82,13 @@ function Games({
                 null,
 
               officialUrl:
-                game.official_url ??
-                null,
+              game.official_url ?? null,
+
+              onlineUrl:
+              game.online_url ?? null,
             })
           );
+   console.log("FORMATTED GAMES:", formattedGames);
 
         setGames(formattedGames);
 
@@ -384,6 +388,10 @@ function Games({
                 players={
                   game.players
                 }
+
+                  onlineUrl={
+                   game.onlineUrl
+                 }
 
                 gameId={game.id}
 

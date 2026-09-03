@@ -8,6 +8,7 @@ function GameCard({
   category,
   players,
   gameId,
+  onlineUrl,
   toggleFavorites,
   isFavorite,
 }) {
@@ -36,29 +37,47 @@ function GameCard({
         👥 Players: {players}
       </p>
 
-     <div className="game-card-actions">
+      <div className="game-card-actions">
 
-  <button
-    type="button"
-    onClick={() => navigate(`/games/${gameId}`)}
-  >
-    🎮 View Details
-  </button>
+        {/* PLAY ONLINE */}
+        {onlineUrl && (
+        <button
+          type="button"
+          onClick={() =>
+        navigate(`/games/${gameId}/play`)
+      }
+    >
+      🎮 Play Online
+    </button>
+  )}
 
-  <button
-    type="button"
-    onClick={() => toggleFavorites(gameId)}
-  >
-    {isFavorite
-      ? "❤️ Remove Favorite"
-      : "🤍 Favorite"}
-  </button>
+        {/* VIEW DETAILS */}
+        <button
+          type="button"
+          onClick={() =>
+            navigate(
+              `/games/${gameId}`
+            )
+          }
+        >
+          📋 View Details
+        </button>
 
-</div>
+        {/* FAVORITE */}
+        <button
+          type="button"
+          onClick={() =>
+            toggleFavorites(gameId)
+          }
+        >
+          {isFavorite
+            ? "❤️ Remove Favorite"
+            : "🤍 Favorite"}
+        </button>
 
       </div>
 
-
+    </div>
   );
 }
 

@@ -95,6 +95,11 @@ function Login() {
           Don't have any account?{" "}
           <Link to="/register">Register</Link>
         </p>
+        <p className="forgot-password">
+        <Link to="/forgot-password">
+          Forgot Password?
+        </Link>
+      </p>
 
       </div>
     </div>

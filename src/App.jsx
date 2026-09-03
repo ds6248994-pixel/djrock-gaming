@@ -1,10 +1,22 @@
 import "./App.css";
-import Navbar from "./components/Navbar";
-import DJRockAI from "./components/DJRockAI";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import API_URL from "./lib/api";
 
+import Navbar from "./components/Navbar";
+
+
+
+import {
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import API_URL from "./lib/api";
 import { supabase } from "./lib/supabase";
 
 import Home from "./pages/Home";
@@ -15,19 +27,30 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import GameDetails from "./pages/GameDetails";
-import ScoreTest from "./pages/ScoreTest";
-import Leaderboard from "./pages/Leaderboard";
-import MyScores from "./pages/MyScores";
+import PlayGame from "./pages/PlayGame";
+import Admin from "./pages/Admin";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import SnakeGame from "./pages/SnakeGame";
+
 
 function App() {
-  const [favorites, setFavorites] = useState([]);
-  const [user, setUser] = useState(null);
-  const [session, setSession] = useState(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const [favorites, setFavorites] =
+    useState([]);
+
+  const [user, setUser] =
+    useState(null);
+
+  const [session, setSession] =
+    useState(null);
+
+  const [authLoading, setAuthLoading] =
+    useState(true);
 
   // Prevent old user's favorite request
   // from updating the new user's favorites.
-  const favoritesRequest = useRef(0);
+  const favoritesRequest =
+    useRef(0);
 
   // ================================
   // INITIAL SESSION + AUTH LISTENER
@@ -38,12 +61,18 @@ function App() {
     async function loadInitialSession() {
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } =
+        await supabase.auth.getSession();
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       setSession(session);
-      setUser(session?.user ?? null);
+      setUser(
+        session?.user ?? null
+      );
+
       setAuthLoading(false);
     }
 
@@ -51,21 +80,25 @@ function App() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
-        if (!mounted) return;
+    } =
+      supabase.auth.onAuthStateChange(
+        (_event, newSession) => {
+          if (!mounted) {
+            return;
+          }
 
-        // Immediately update current user/session
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
+          setSession(newSession);
 
-        // IMPORTANT:
-        // Clear old user's favorites immediately.
-        if (!newSession?.user) {
-          setFavorites([]);
+          setUser(
+            newSession?.user ?? null
+          );
+
+          // Clear old user's favorites
+          if (!newSession?.user) {
+            setFavorites([]);
+          }
         }
-      }
-    );
+      );
 
     return () => {
       mounted = false;
@@ -89,15 +122,16 @@ function App() {
         ++favoritesRequest.current;
 
       try {
-        const response = await fetch(
-          `${API_URL}/api/favorites`,
-          {
-            headers: {
-              Authorization:
-                `Bearer ${session.access_token}`,
-            },
-          }
-        );
+        const response =
+          await fetch(
+            `${API_URL}/api/favorites`,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${session.access_token}`,
+              },
+            }
+          );
 
         const result =
           await response.json();
@@ -153,19 +187,24 @@ function App() {
     return () => {
       cancelled = true;
     };
-  }, [
-    session?.user?.id,
+}, [
+    session?.user,
     session?.access_token,
-  ]);
+]);
 
   // ================================
   // TOGGLE FAVORITE
   // ================================
-  async function toggleFavorite(gameId) {
+  async function toggleFavorite(
+    gameId
+  ) {
     try {
       const {
-        data: { session: currentSession },
-      } = await supabase.auth.getSession();
+        data: {
+          session: currentSession,
+        },
+      } =
+        await supabase.auth.getSession();
 
       if (!currentSession?.user) {
         navigateToLogin();
@@ -174,6 +213,15 @@ function App() {
 
       const numericGameId =
         Number(gameId);
+
+      if (!numericGameId) {
+        console.error(
+          "Invalid game ID:",
+          gameId
+        );
+
+        return;
+      }
 
       const isFavorite =
         favorites.includes(
@@ -186,41 +234,44 @@ function App() {
       // REMOVE FAVORITE
       // ================================
       if (isFavorite) {
-        response = await fetch(
-          `${API_URL}/api/favorites/${numericGameId}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization:
-                `Bearer ${currentSession.access_token}`,
-            },
-          }
-        );
+        response =
+          await fetch(
+            `${API_URL}/api/favorites/${numericGameId}`,
+            {
+              method: "DELETE",
+
+              headers: {
+                Authorization:
+                  `Bearer ${currentSession.access_token}`,
+              },
+            }
+          );
       }
 
       // ================================
       // ADD FAVORITE
       // ================================
       else {
-        response = await fetch(
-          "`${API_URL}/api/favorites/${numericGameId}`",
-          {
-            method: "POST",
+        response =
+          await fetch(
+            `${API_URL}/api/favorites`,
+            {
+              method: "POST",
 
-            headers: {
-              "Content-Type":
-                "application/json",
+              headers: {
+                "Content-Type":
+                  "application/json",
 
-              Authorization:
-                `Bearer ${currentSession.access_token}`,
-            },
+                Authorization:
+                  `Bearer ${currentSession.access_token}`,
+              },
 
-            body: JSON.stringify({
-              game_id:
-                numericGameId,
-            }),
-          }
-        );
+              body: JSON.stringify({
+                game_id:
+                  numericGameId,
+              }),
+            }
+          );
       }
 
       const result =
@@ -231,36 +282,41 @@ function App() {
           "Favorite Error:",
           result
         );
+
         return;
       }
 
       // ================================
-      // UPDATE STATE SAFELY
+      // UPDATE FRONTEND STATE
       // ================================
       if (isFavorite) {
-        setFavorites((current) =>
-          current.filter(
-            (id) =>
-              Number(id) !==
-              numericGameId
-          )
-        );
-      } else {
-        setFavorites((current) => {
-          // Prevent duplicate in React state
-          if (
-            current.includes(
-              numericGameId
+        setFavorites(
+          (current) =>
+            current.filter(
+              (id) =>
+                Number(id) !==
+                numericGameId
             )
-          ) {
-            return current;
-          }
+        );
 
-          return [
-            ...current,
-            numericGameId,
-          ];
-        });
+      } else {
+        setFavorites(
+          (current) => {
+            // Prevent duplicate
+            if (
+              current.includes(
+                numericGameId
+              )
+            ) {
+              return current;
+            }
+
+            return [
+              ...current,
+              numericGameId,
+            ];
+          }
+        );
       }
 
     } catch (error) {
@@ -299,7 +355,7 @@ function App() {
         user={user}
       />
 
-      <DJRockAI />
+   
 
       <Routes>
 
@@ -310,7 +366,9 @@ function App() {
           path="/"
           element={
             <Home
-              favorites={favorites}
+              favorites={
+                favorites
+              }
               setFavorites={
                 setFavorites
               }
@@ -328,11 +386,23 @@ function App() {
           path="/games"
           element={
             <Games
-              favorites={favorites}
+              favorites={
+                favorites
+              }
               toggleFavorite={
                 toggleFavorite
               }
             />
+          }
+        />
+
+        {/* ================================
+            GAME PLAY / TEST
+        ================================ */}
+        <Route
+          path="/games/:id/play"
+          element={
+            <PlayGame />
           }
         />
 
@@ -343,7 +413,9 @@ function App() {
           path="/games/:id"
           element={
             <GameDetails
-              favorites={favorites}
+              favorites={
+                favorites
+              }
               toggleFavorite={
                 toggleFavorite
               }
@@ -358,7 +430,9 @@ function App() {
           path="/favorites"
           element={
             <Favorites
-              favorites={favorites}
+              favorites={
+                favorites
+              }
               toggleFavorite={
                 toggleFavorite
               }
@@ -397,57 +471,6 @@ function App() {
         />
 
         {/* ================================
-            SCORE TEST
-        ================================ */}
-        <Route
-          path="/score-test"
-          element={
-            user ? (
-              <ScoreTest />
-            ) : (
-              <Navigate
-                to="/login"
-                replace
-              />
-            )
-          }
-        />
-
-        {/* ================================
-    LEADERBOARD
-================================ */}
-<Route
-  path="/leaderboard"
-  element={
-    user ? (
-      <Leaderboard />
-    ) : (
-      <Navigate
-        to="/login"
-        replace
-      />
-    )
-  }
-/>
-
-        {/* ================================
-    MY SCORES
-================================ */}
-<Route
-  path="/my-scores"
-  element={
-    user ? (
-      <MyScores />
-    ) : (
-      <Navigate
-        to="/login"
-        replace
-      />
-    )
-  }
-/>
-    
-        {/* ================================
             PROFILE
         ================================ */}
         <Route
@@ -466,9 +489,41 @@ function App() {
           }
         />
 
-      </Routes>
-    </>
-  );
+        
+{/*================================
+    ADMIN
+================================ */}
+
+<Route
+       path="/admin"
+        element={
+     user ? (
+       <Admin />
+         ) : (
+         <Navigate
+            to="/login"
+            replace
+       />
+       )
+      }
+     />
+     <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
+
+          <Route
+            path="/reset-password"
+            element={<ResetPassword />}
+          />
+          <Route
+            path="/snakegame"
+            element={<SnakeGame />}
+          />
+
+     </Routes>
+          </>
+      );
 }
 
 export default App;

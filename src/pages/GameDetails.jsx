@@ -83,7 +83,7 @@ function GameDetails({ favorites, toggleFavorite }) {
             "See Game Details",
 
           releaseYear:
-            backendGame.releaseYear ??
+            backendGame.release_date ??
             "Not Available",
 
           officialUrl:
