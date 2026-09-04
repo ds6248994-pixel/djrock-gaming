@@ -209,6 +209,19 @@ const updatedProfile =
         return;
       }
 
+        const { error: authUpdateError } =
+  await supabase.auth.updateUser({
+    data: {
+      name: name.trim(),
+    },
+  });
+
+if (authUpdateError) {
+  console.error(
+    "Auth Display Name Update Error:",
+    authUpdateError
+  );
+}
       // ================================
       // UPDATE LOCAL STORAGE
       // ================================
