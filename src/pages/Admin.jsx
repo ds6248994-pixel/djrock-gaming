@@ -110,7 +110,7 @@ const checkAdminAccess = useCallback(async () => {
     }
 
     const adminResponse = await fetch(
-      "http://https://djrock-backend.onrender.com/api/admin/check",
+      "https://djrock-backend.onrender.com/api/admin/check",
       {
         method: "GET",
         headers: {
@@ -136,7 +136,7 @@ const checkAdminAccess = useCallback(async () => {
     setAuthorized(true);
 
     const statsResponse = await fetch(
-      "http://https://djrock-backend.onrender.com/api/admin/stats",
+      "https://djrock-backend.onrender.com/api/admin/stats",
       {
         method: "GET",
         headers: {
@@ -152,7 +152,7 @@ const checkAdminAccess = useCallback(async () => {
     }
 
     const usersResponse = await fetch(
-      "http://https://djrock-backend.onrender.com/api/admin/users",
+      "https://djrock-backend.onrender.com/api/admin/users",
       {
         method: "GET",
         headers: {
@@ -168,7 +168,7 @@ const checkAdminAccess = useCallback(async () => {
     }
 
     const gamesResponse = await fetch(
-      "http://https://djrock-backend.onrender.com/api/admin/games",
+      "https://djrock-backend.onrender.com/api/admin/games",
       {
         method: "GET",
         headers: {
@@ -186,7 +186,7 @@ const checkAdminAccess = useCallback(async () => {
     setReviewsLoading(true);
 
     const reviewsResponse = await fetch(
-      "http://https://djrock-backend.onrender.com/api/admin/reviews",
+      "https://djrock-backend.onrender.com/api/admin/reviews",
       {
         method: "GET",
         headers: {
@@ -206,7 +206,7 @@ const checkAdminAccess = useCallback(async () => {
     setFavoritesLoading(true);
 
     const favoritesResponse = await fetch(
-      "http://https://djrock-backend.onrender.com/api/admin/favorites",
+      "https://djrock-backend.onrender.com/api/admin/favorites",
       {
         method: "GET",
         headers: {
@@ -270,7 +270,7 @@ useEffect(() => {
       }
 
       const response = await fetch(
-        `http://https://djrock-backend.onrender.com/api/admin/reviews/${review.id}`,
+        "https://djrock-backend.onrender.com/api/admin/reviews/${review.id}",
         {
           method: "DELETE",
 
@@ -363,7 +363,7 @@ async function handleDeleteFavorite(favorite) {
     }
 
     const response = await fetch(
-      `http://https://djrock-backend.onrender.com/api/admin/favorites/${favorite.id}`,
+      `https://djrock-backend.onrender.com/api/admin/favorites/${favorite.id}`,
       {
         method: "DELETE",
 
@@ -451,7 +451,7 @@ async function handleDeleteFavorite(favorite) {
       }
 
       const response = await fetch(
-        "http://https://djrock-backend.onrender.com/api/admin/games",
+        "https://djrock-backend.onrender.com/api/admin/games",
         {
           method: "POST",
 
@@ -554,7 +554,7 @@ async function handleDeleteFavorite(favorite) {
       }
 
       const response = await fetch(
-        `http://https://djrock-backend.onrender.com/api/admin/games/${editingGameId}`,
+        `https://djrock-backend.onrender.com/api/admin/games/${editingGameId}`,
         {
           method: "PUT",
 
@@ -645,7 +645,7 @@ async function handleDeleteFavorite(favorite) {
       }
 
       const response = await fetch(
-        `http://https://djrock-backend.onrender.com/api/admin/games/${game.id}`,
+        `https://djrock-backend.onrender.com/api/admin/games/${game.id}`,
         {
           method: "DELETE",
 
@@ -760,7 +760,7 @@ async function handleDeleteFavorite(favorite) {
       }
 
       const response = await fetch(
-        `http://https://djrock-backend.onrender.com/api/admin/users/${user.id}/role`,
+        `https://djrock-backend.onrender.com/api/admin/users/${user.id}/role`,
         {
           method: "PUT",
 
@@ -861,7 +861,7 @@ async function handleDeleteFavorite(favorite) {
       }
 
       const response = await fetch(
-        `http://https://djrock-backend.onrender.com/api/admin/users/${user.id}`,
+        `https://djrock-backend.onrender.com/api/admin/users/${user.id}`,
         {
           method: "DELETE",
 
