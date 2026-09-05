@@ -1,16 +1,103 @@
-# React + Vite
+# 🎮 DJROCK Gaming
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DJROCK Gaming is a full-stack gaming platform
+built with React, Vite, Express.js and Supabase.
 
-Currently, two official plugins are available:
+Users can browse games, search and filter games, manage favorites, view game details, play games through official links, and submit reviews.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 👤 Authentication
+- User registration
+- Email verification
+- Login / Logout
+- Forgot password
+- Password reset
+- Multi-factor authentication support
 
-## Expanding the ESLint configuration
+### 👤 User Profile
+- Update username
+- Update contact number
+- Profile management
+- Profile and authentication display name synchronization
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🎮 Games
+- Browse games
+- Search games
+- Category filtering
+- A-Z / Z-A sorting
+- Game details
+- Official game links
+- Play Now functionality
+
+### ❤️ Favorites
+- Add games to favorites
+- Remove games from favorites
+- View favorite games
+- Favorite count
+
+### ⭐ Reviews
+- Add reviews
+- Give ratings
+- Edit reviews
+- Delete reviews
+- View community reviews
+
+### 🛡️ Admin Panel
+- Admin authentication protection
+- Dashboard
+- User management
+- Change user roles
+- Delete users
+- Games management
+- Reviews management
+- Favorites statistics
+
+### 📱 Responsive Design
+- Desktop support
+- Mobile-friendly layout
+- Responsive navigation
+- Responsive game cards and pages
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- Vite
+- React Router
+- CSS
+
+### Backend
+- Node.js
+- Express.js
+
+### Database & Authentication
+- Supabase
+- Supabase Authentication
+- PostgreSQL
+
+### Deployment
+- Vercel
+- Render
+
+---
+
+## 📂 Project Structure
+
+```text
+djrock-gaming/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── lib/
+│   └── pages/
+├── .env
+├── .gitignore
+├── package.json
+├── vite.config.js
+└── README.md
