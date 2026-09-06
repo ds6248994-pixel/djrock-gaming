@@ -154,14 +154,50 @@ function GameDetails({ favorites, toggleFavorite }) {
     }
   }
 
-  // ================================
-  // LOAD REVIEWS ON PAGE OPEN
-  // ================================
-  useEffect(() => {
-    if (id) {
-      loadReviews();
+ // ================================
+// LOAD REVIEWS ON PAGE OPEN
+// ================================
+useEffect(() => {
+  async function loadReviews() {
+    try {
+      setReviewsLoading(true);
+
+      const response =
+        await fetch(
+          `${API_URL}/api/games/${id}/reviews`
+        );
+
+      const result =
+        await response.json();
+
+      if (!response.ok) {
+        console.error(
+          "Reviews Load Error:",
+          result
+        );
+
+        return;
+      }
+
+      setReviews(
+        result.reviews || []
+      );
+
+    } catch (error) {
+      console.error(
+        "Load Reviews Error:",
+        error
+      );
+
+    } finally {
+      setReviewsLoading(false);
     }
-  }, [id]);
+  }
+
+  if (id) {
+    loadReviews();
+  }
+}, [id]);
 
   // ================================
   // SUBMIT / UPDATE REVIEW

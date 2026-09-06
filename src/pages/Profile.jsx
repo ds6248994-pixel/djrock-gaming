@@ -17,14 +17,11 @@ function Profile() {
 
   const [message, setMessage] = useState("");
 
-  // ================================
-  // LOAD PROFILE
-  // ================================
+// ================================
+// LOAD PROFILE
+// ================================
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
+useEffect(() => {
   async function loadProfile() {
     try {
       setLoading(true);
@@ -134,6 +131,9 @@ function Profile() {
       setLoading(false);
     }
   }
+
+    loadProfile();
+  }, [navigate]);
 
   // ================================
   // SAVE PROFILE
